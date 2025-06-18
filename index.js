@@ -29,6 +29,10 @@ app.get('/', (req, res) => {
     res.send('Eat fruits and drink mineral water :)');
 });
 
+app.get('/ping', (req,res) => {
+    res.status(200).json({ sucess: true });
+}
+
 app.post('/upload', upload.single('file'), async (req, res) => {
     try {
         const fileBuffer = req.file.buffer;
@@ -52,7 +56,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     }
 });
 
-app.get('/file/:file_id', async (req, res) => {
+app.get('/download/:file_id', async (req, res) => {
     const { file_id } = req.params;
     try {
         const resp = await axios.get(`${TELEGRAM_API}/getFile`, {
