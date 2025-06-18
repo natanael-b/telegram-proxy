@@ -44,8 +44,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         const file_id = telegramResp.data.result.document?.file_id;
         res.json({ message: 'File sent to Telegram!', file_id });
     } catch (err) {
-        console.error(err.message);
-        res.status(500).json({ error: 'Upload failed.' });
+        res.status(500).json({ error: `${err.message}` });
     }
 });
 
