@@ -35,7 +35,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         const fileName = req.file.originalname;
         const formData = new FormData();
         formData.append('chat_id', CHAT_ID);
-        formData.append('document', fileBuffer, fileName);
+        formData.append('document', fileBuffer, { filename: fileName });
         const telegramResp = await axios.post(
             `${TELEGRAM_API}/sendDocument`,
             formData,
@@ -44,7 +44,11 @@ app.post('/upload', upload.single('file'), async (req, res) => {
         const file_id = telegramResp.data.result.document?.file_id;
         res.json({ message: 'File sent to Telegram!', file_id });
     } catch (err) {
-        res.status(500).json({ error: `${err.message}` });
+        console.error('Telegram API Error:', err.response?.data);
+            res.status(500).json({ 
+            error: `${err.message}`, 
+            telegram: err.response?.data 
+        });
     }
 });
 
