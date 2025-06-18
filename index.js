@@ -29,9 +29,9 @@ app.get('/', (req, res) => {
     res.send('Eat fruits and drink mineral water :)');
 });
 
-app.get('/ping', (req,res) => {
-    res.status(200).json({ sucess: true });
-}
+app.get('/ping', (req, res) => {
+    res.status(200).json({ success: true });
+});
 
 app.post('/upload', upload.single('file'), async (req, res) => {
     try {
