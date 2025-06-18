@@ -63,7 +63,7 @@ app.post('/uploadImage', upload.single('image'), async (req, res) => {
         const fileBase64 = fileBuffer.toString('base64');
 
         const formData = new FormData();
-        formData.append('key', IMGBB_API_KEY);
+        formData.append('key', IMGBB_KEY);
         formData.append('image', fileBase64);
 
         const imgbbResp = await axios.post(
