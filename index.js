@@ -17,7 +17,7 @@ app.use(cors({
 
 const PORT = process.env.PORT || 3000;
 const BOT_TOKEN = process.env.TOKEN || `7020765117:AAFIn4F1NCnpcV6zGw26ODYHsAfxMLlRkSI`;
-const CHAT_ID = process.env.CHAT_ID || `58937654`;
+const CHAT_ID = process.env.CHAT_ID || `589376542`;
 const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
 
 const upload = multer({
