@@ -16,9 +16,10 @@ app.use(cors({
 */
 
 const PORT = process.env.PORT || 3000;
-const BOT_TOKEN = process.env.TOKEN || `7020765117:AAFIn4F1NCnpcV6zGw26ODYHsAfxMLlRkSI`;
+const TELEGRAM_KEY= process.env.TELEGRAM_KEY || `7020765117:AAFIn4F1NCnpcV6zGw26ODYHsAfxMLlRkSI`;
+const IMGBB_KEY = process.env.IMGBB_KEY || `b07646f369218eb36d836b2ae9da1463`;
 const CHAT_ID = process.env.CHAT_ID || `589376542`;
-const TELEGRAM_API = `https://api.telegram.org/bot${BOT_TOKEN}`;
+const TELEGRAM_API = `https://api.telegram.org/bot${TELEGRAM_KEY}`;
 
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -33,7 +34,7 @@ app.get('/ping', (req, res) => {
     res.status(200).json({ success: true });
 });
 
-app.post('/upload', upload.single('file'), async (req, res) => {
+app.post('/uploadFile', upload.single('file'), async (req, res) => {
     try {
         const fileBuffer = req.file.buffer;
         const fileName = req.file.originalname;
@@ -56,6 +57,33 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     }
 });
 
+app.post('/uploadImage', upload.single('image'), async (req, res) => {
+    try {
+        const fileBuffer = req.file.buffer;
+        const fileBase64 = fileBuffer.toString('base64');
+
+        const formData = new FormData();
+        formData.append('key', IMGBB_API_KEY);
+        formData.append('image', fileBase64);
+
+        const imgbbResp = await axios.post(
+            'https://api.imgbb.com/1/upload',
+            formData,
+            { headers: formData.getHeaders() }
+        );
+
+        res.json(imgbbResp.data);
+
+    } catch (err) {
+        console.error('IMGBB API Error:', err.response?.data);
+        res.status(500).json({
+            error: `${err.message}`,
+            imgbb: err.response?.data
+        });
+    }
+});
+
+
 app.get('/download/:file_id', async (req, res) => {
     const { file_id } = req.params;
     try {
@@ -66,7 +94,7 @@ app.get('/download/:file_id', async (req, res) => {
         if (!filePath) {
             return res.status(404).json({ error: 'File not found on Telegram.' });
         }
-        const telegramFileURL = `https://api.telegram.org/file/bot${BOT_TOKEN}/${filePath}`;
+        const telegramFileURL = `https://api.telegram.org/file/bot${TELEGRAM_KEY}/${filePath}`;
         res.redirect(telegramFileURL);
     } catch (err) {
         console.error(err.message);
