@@ -102,7 +102,7 @@ app.get('/fetch/:file_id', async (req, res) => {
     const { file_id } = req.params;
 
     try {
-        const resp = await axios.get(${TELEGRAM_API}/getFile, {
+        const resp = await axios.get(`${TELEGRAM_API}/getFile`, {
             params: { file_id }
         });
 
