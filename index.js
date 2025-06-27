@@ -111,13 +111,13 @@ app.get('/fetch/:file_id', async (req, res) => {
             return res.status(404).json({ error: 'File not found on Telegram.' });
         }
 
-        const telegramFileURL = https://api.telegram.org/file/bot${TELEGRAM_KEY}/${filePath};
+        const telegramFileURL = `https://api.telegram.org/file/bot${TELEGRAM_KEY}/${filePath}`;
         const fileStream = await axios.get(telegramFileURL, {
             responseType: 'stream'
         });
 
         res.setHeader('Content-Type', 'application/octet-stream');
-        res.setHeader('Content-Disposition', attachment; filename="${filePath.split('/').pop()}");
+        res.setHeader('Content-Disposition', attachment; filename=`${filePath.split('/').pop()}`);
 
         fileStream.data.pipe(res);
     } catch (err) {
