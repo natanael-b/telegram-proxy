@@ -117,7 +117,7 @@ app.get('/fetch/:file_id', async (req, res) => {
         });
 
         res.setHeader('Content-Type', 'application/octet-stream');
-        res.setHeader('Content-Disposition', attachment; filename=`${filePath.split('/').pop()}`);
+        res.setHeader('Content-Disposition', `attachment; filename=${filePath.split('/').pop()}`);
 
         fileStream.data.pipe(res);
     } catch (err) {
